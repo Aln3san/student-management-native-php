@@ -37,15 +37,61 @@ class Student
         return false;
     }
 
-    public function read()
+    // Method to count total students for pagination calculations
+    public function countAll($search = null)
     {
-        // Get students
-        $query = 'Select id, name, email, progress From ' . $this->table . ' Order By id Desc';
-        // Prepare Query
-        $stmt = $this->connection->prepare($query);
-        // Implementation
-        $stmt->execute();
+        $query = "SELECT COUNT(*) as total_rows FROM " . $this->table;
 
+        // Add search condition if search term exists
+        if ($search) {
+            $query .= " WHERE name LIKE :search OR email LIKE :search";
+        }
+
+        $stmt = $this->connection->prepare($query);
+
+        // Bind search parameter if it exists
+        if ($search) {
+            $searchTerm = "%{$search}%";
+            $stmt->bindParam(':search', $searchTerm);
+        }
+
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row['total_rows'];
+    }
+
+    public function read($from_record_num = null, $records_per_page = null, $search = null)
+    {
+        $query = "SELECT * FROM " . $this->table;
+
+        // Add search condition if search term exists
+        if ($search) {
+            $query .= " WHERE name LIKE :search OR email LIKE :search";
+        }
+
+        $query .= " ORDER BY id DESC";
+
+        // Add pagination limit if parameters are provided
+        if ($from_record_num !== null && $records_per_page !== null) {
+            $query .= " LIMIT :from, :records";
+        }
+
+        $stmt = $this->connection->prepare($query);
+
+        // Bind search parameter
+        if ($search) {
+            $searchTerm = "%{$search}%";
+            $stmt->bindParam(':search', $searchTerm);
+        }
+
+        // Bind pagination parameters with Integer type casting
+        if ($from_record_num !== null && $records_per_page !== null) {
+            $stmt->bindParam(':from', $from_record_num, PDO::PARAM_INT);
+            $stmt->bindParam(':records', $records_per_page, PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
         return $stmt;
     }
 
