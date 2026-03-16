@@ -1,6 +1,7 @@
 # Ignore local environment files
 .DS_Store
 Thumbs.db
+Class/Database.php
 
 # If you have any database credentials in a separate file later
 # config.php (uncomment if you want to keep it local)
