@@ -8,6 +8,15 @@
     </div>
 </div>
 
+<form action="index.php" method="GET" class="mb-3 shadow-sm">
+    <div class="input-group">
+        <input type="text" name="search" class="form-control" placeholder="Search by name or email..." value="<?php echo $search; ?>">
+        <button class="btn btn-primary" type="submit">Search</button>
+        <?php if ($search): ?>
+            <a href="index.php" class="btn btn-secondary">Clear</a>
+        <?php endif; ?>
+    </div>
+</form>
 <div class="card main-card shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -50,23 +59,23 @@
                     <?php endwhile; ?>
                 </tbody>
             </table>
-            <nav aria-label="Page navigation" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item <?php echo ($page <= 1) ? 'disabled' : ''; ?>">
-                        <a class="page-link" href="?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>"><i class="fa-solid fa-arrow-left-long"></i></a>
-                    </li>
-
-                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                        <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
-                            <a class="page-link" href="?page=<?php echo $i; ?>&search=<?php echo $search; ?>"><?php echo $i; ?></a>
-                        </li>
-                    <?php endfor; ?>
-
-                    <li class="page-item <?php echo ($page >= $total_pages) ? 'disabled' : ''; ?>">
-                        <a class="page-link" href="?page=<?php echo $page + 1; ?>&search=<?php echo $search; ?>"><i class="fa-solid fa-arrow-right"></i></a>
-                    </li>
-                </ul>
-            </nav>
         </div>
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <?php echo ($page <= 1) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>"><i class="fa-solid fa-arrow-left-long"></i></a>
+                </li>
+
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
+                        <a class="page-link" href="?page=<?php echo $i; ?>&search=<?php echo $search; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <li class="page-item <?php echo ($page >= $total_pages) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $page + 1; ?>&search=<?php echo $search; ?>"><i class="fa-solid fa-arrow-right"></i></a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>

@@ -10,12 +10,12 @@ $db = $database->conn;
 $student = new Student($db);
 $search = isset($_GET['search']) ? $_GET['search'] : null;
 
-// إعدادات الصفحات
+// Page Settings
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$records_per_page = 5; // عدد الطلاب في كل صفحة
+$records_per_page = 5; // Number of students per page
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 
-// جلب البيانات
+// Fetch Data
 $result = $student->read($from_record_num, $records_per_page, $search);
 $total_rows = $student->countAll($search);
 $total_pages = ceil($total_rows / $records_per_page);
